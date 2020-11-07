@@ -1,13 +1,17 @@
 package ex0;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class Graph_DS implements graph {
 	
 	
-	private HashSet<node_data> m_edges = new HashSet<node_data>();
+	private HashSet<node_data> m_vertices = new HashSet<node_data>();
+	private int m_modeCount = 0;
+	
+	private void innerStateHasChanged() {
+		++m_modeCount;
+	}
 
 	@Override
 	public node_data getNode(int key) {
@@ -22,7 +26,9 @@ public class Graph_DS implements graph {
 
 	@Override
 	public void addNode(node_data n) {
-		m_edges.add(n);
+		m_vertices.add(n);
+		
+		innerStateHasChanged();
 	}
 
 	@Override
@@ -35,27 +41,31 @@ public class Graph_DS implements graph {
 		
 		node_data1.addNi(node_data2);
 		node_data2.addNi(node_data1);
+		
+		innerStateHasChanged();
 	}
 
 	@Override
 	public Collection<node_data> getV() {
-		return m_edges;
+		return m_vertices;
 	}
 
 	@Override
 	public Collection<node_data> getV(int node_id) {
 		node_data node = NodeData.getNodeByKey(node_id);
-		return m_edges.contains(node)? node.getNi(): null;
+		return m_vertices.contains(node)? node.getNi(): null;
 	}
 
 	@Override
 	public node_data removeNode(int key) {
 		node_data node = NodeData.getNodeByKey(key);
-		m_edges.remove(node);
+		m_vertices.remove(node);
 		
-		for(node_data vertices: m_edges) {
-			vertices.removeNode(node);
+		for(node_data vertex: m_vertices) {
+			vertex.removeNode(node);
 		}
+		
+		innerStateHasChanged();
 		
 		return node;
 	}
@@ -70,23 +80,29 @@ public class Graph_DS implements graph {
 		
 		node_data1.removeNode(node_data2);
 		node_data2.removeNode(node_data1);
+		
+		innerStateHasChanged();
 	}
 
 	@Override
 	public int nodeSize() {
-		return m_edges.size();
+		return m_vertices.size();
 	}
 
 	@Override
 	public int edgeSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		int count = 0;
+		
+		for(node_data vertex: m_vertices) {
+			count += vertex.getNi().size();
+		}
+		
+		return count/2;
 	}
 
 	@Override
 	public int getMC() {
-		// TODO Auto-generated method stub
-		return 0;
+		return m_modeCount;
 	}
 
 }

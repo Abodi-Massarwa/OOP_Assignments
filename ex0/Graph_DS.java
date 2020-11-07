@@ -62,14 +62,19 @@ public class Graph_DS implements graph {
 
 	@Override
 	public void removeEdge(int node1, int node2) {
-		// TODO Auto-generated method stub
+		node_data node_data1 = NodeData.getNodeByKey(node1);
+		node_data node_data2 = NodeData.getNodeByKey(node2);
 		
+		if(node_data1 == null || node_data2 == null || node_data1 == node_data2)
+			return;
+		
+		node_data1.removeNode(node_data2);
+		node_data2.removeNode(node_data1);
 	}
 
 	@Override
 	public int nodeSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return m_edges.size();
 	}
 
 	@Override

@@ -30,9 +30,7 @@ public class Graph_DS implements graph {
 		// A guard in case the user didn't add the node (Another option is to throw an error)
 		m_edges.putIfAbsent(NodeData.getNodeByKey(node1), new HashSet<node_data>());
 		
-		m_edges.computeIfPresent(NodeData.getNodeByKey(node1), 
-				(k,v) -> v.add(NodeData.getNodeByKey(node2))?v:v //Returned v because add returns a boolean value
-			);
+		m_edges.get(NodeData.getNodeByKey(node1)).add(NodeData.getNodeByKey(node2));
 	}
 
 	@Override

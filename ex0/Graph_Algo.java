@@ -1,5 +1,6 @@
 package ex0;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,15 +37,33 @@ public class Graph_Algo implements graph_algorithms {
 	public boolean isConnected() {
 		int count = 0;
 		
+		ArrayList<node_data> nodes = new ArrayList<node_data>();
+		
+		// Making all nodes white (in case they were black before)
 		for(node_data n: m_graph.getV()) {
+			if(nodes.isEmpty())
+				nodes.add(n);
 			n.setInfo(NodeData.white);
 		}
 		
-		for(node_data n: m_graph.getV()) {
-			if(n.getInfo() == NodeData.white) {
+		while(!nodes.isEmpty()) {
+			node_data n = nodes.remove(0);
+			
+			if(n.getInfo().equals(NodeData.white)) {
 				++count;
+				n.setInfo(NodeData.gray);
+			}
+			
+			if(n.getInfo().equals(NodeData.gray)) {
+				for(node_data neighbor: n.getNi()) {
+					if(neighbor.getInfo().equals(NodeData.white)) {
+						++count;
+						neighbor.setInfo(NodeData.gray);
+						nodes.add(neighbor);
+					}
+				}
 				
-				
+				n.setInfo(NodeData.black);
 			}
 		}
 		

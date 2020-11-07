@@ -1,26 +1,26 @@
 package ex0;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class NodeData implements node_data {
 	
-	private static int m_keyGenerator = 0;
+	private static int s_keyGenerator = 0;
+	private static HashMap<Integer, NodeData> s_allNodes = new HashMap<Integer, NodeData>();
+	
+	public static node_data getNodeByKey(int key) {
+		return s_allNodes.get(key);
+	}
 	
 	private int m_key;
-	private HashSet<node_data> m_neighbors;
+	private HashSet<node_data> m_neighbors = new HashSet<node_data>();
 	private String m_innerInfo = "No info special aviable yet!";
 	private int m_innerTag = Integer.MIN_VALUE;
 	
 	public NodeData() {
-		m_key = m_keyGenerator;
-		++m_keyGenerator;
-		
-		m_neighbors = new HashSet<node_data>();
-	}
-	
-	private NodeData(int key) {
-		m_key = key;
+		m_key = s_keyGenerator;
+		++s_keyGenerator;
 	}
 
 	@Override
@@ -35,8 +35,7 @@ public class NodeData implements node_data {
 
 	@Override
 	public boolean hasNi(int key) {
-		// Dummy Object
-		return m_neighbors.contains(new NodeData(key));
+		return m_neighbors.contains(getNodeByKey(key));
 	}
 	
 	@Override

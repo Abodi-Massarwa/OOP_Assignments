@@ -9,6 +9,8 @@ public class NodeData implements node_data {
 	private static int s_keyGenerator = 0;
 	private static HashMap<Integer, NodeData> s_allNodes = new HashMap<Integer, NodeData>();
 	
+	public final static String white = "White", gray = "Gray", black = "Black";
+	
 	public static node_data getNodeByKey(int key) {
 		return s_allNodes.get(key);
 	}

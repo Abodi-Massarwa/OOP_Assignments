@@ -69,17 +69,91 @@ public class Graph_Algo implements graph_algorithms {
 		
 		return m_graph.getV().size() == count;
 	}
+	
+	
 
 	@Override
 	public int shortestPathDist(int src, int dest) {
-		// TODO Auto-generated method stub
-		return 0;
+		node_data srcNode = NodeData.getNodeByKey(src), destNode = NodeData.getNodeByKey(dest);
+		
+		HashMap<node_data, node_data> prev = new HashMap<node_data, node_data>();
+		HashMap<node_data, Integer> dist = new HashMap<node_data, Integer>();
+		
+		dist.put(destNode, 0);
+		
+		for(node_data n: m_graph.getV()) {
+			prev.put(n, null);
+			dist.putIfAbsent(n, -1);
+		}
+		
+		ArrayList<node_data> nodes =new ArrayList<node_data>();
+		
+		nodes.add(destNode);
+		while(!nodes.isEmpty()) {
+			node_data n = nodes.remove(0);
+			
+			for(node_data neighbor: n.getNi()) {
+				if(dist.get(neighbor) == -1 || dist.get(neighbor) + 1 > dist.get(n)) {
+					dist.computeIfPresent(neighbor, (k, v) -> v = dist.get(n) + 1);
+					prev.computeIfPresent(neighbor, (k, v) -> v = n);
+					
+					int srcPath = dist.get(srcNode);
+					
+					if(srcPath != -1 || srcPath > dist.get(neighbor))
+						nodes.add(neighbor);
+				}
+			}
+		}
+		
+		return dist.get(srcNode);
 	}
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-		// TODO Auto-generated method stub
-		return null;
+		node_data srcNode = NodeData.getNodeByKey(src), destNode = NodeData.getNodeByKey(dest);
+		
+		HashMap<node_data, node_data> prev = new HashMap<node_data, node_data>();
+		HashMap<node_data, Integer> dist = new HashMap<node_data, Integer>();
+		
+		dist.put(destNode, 0);
+		
+		for(node_data n: m_graph.getV()) {
+			prev.put(n, null);
+			dist.putIfAbsent(n, -1);
+		}
+		
+		ArrayList<node_data> nodes =new ArrayList<node_data>();
+		
+		nodes.add(destNode);
+		while(!nodes.isEmpty()) {
+			node_data n = nodes.remove(0);
+			
+			for(node_data neighbor: n.getNi()) {
+				if(dist.get(neighbor) == -1 || dist.get(neighbor) + 1 > dist.get(n)) {
+					dist.computeIfPresent(neighbor, (k, v) -> v = dist.get(n) + 1);
+					prev.computeIfPresent(neighbor, (k, v) -> v = n);
+					
+					int srcPath = dist.get(srcNode);
+					
+					if(srcPath != -1 || srcPath > dist.get(neighbor))
+						nodes.add(neighbor);
+				}
+			}
+		}
+		
+		if(dist.get(srcNode) == -1)
+			return null;
+		
+		List<node_data> ret = new ArrayList<node_data>();
+		
+		while(srcNode != destNode) {
+			ret.add(srcNode);
+			srcNode = prev.get(srcNode);
+		}
+		
+		ret.add(srcNode);
+		
+		return ret;
 	}
 
 }

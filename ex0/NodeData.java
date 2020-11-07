@@ -1,24 +1,50 @@
 package ex0;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class NodeData implements node_data {
+	
+	private static int m_keyGenerator = 0;
+	
+	private int m_key;
+	private ArrayList<node_data> m_neighbors;
+	
+	public NodeData() {
+		m_key = m_keyGenerator;
+		++m_keyGenerator;
+		
+		m_neighbors = new ArrayList<node_data>();
+	}
+	
+	private NodeData(int key) {
+		m_key = key;
+	}
 
 	@Override
 	public int getKey() {
 		// TODO Auto-generated method stub
-		return 0;
+		return m_key;
 	}
 
 	@Override
 	public Collection<node_data> getNi() {
 		// TODO Auto-generated method stub
-		return null;
+		return m_neighbors;
 	}
 
 	@Override
 	public boolean hasNi(int key) {
 		// TODO Auto-generated method stub
+		// Dummy Object
+		return m_neighbors.contains(new NodeData(key));
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof NodeData)
+			return ((NodeData) o).m_key == this.m_key;
+		
 		return false;
 	}
 

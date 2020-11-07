@@ -9,6 +9,8 @@ public class NodeData implements node_data {
 	
 	private int m_key;
 	private ArrayList<node_data> m_neighbors;
+	private String m_innerInfo = "No info special aviable yet!";
+	private int m_innerTag = Integer.MIN_VALUE;
 	
 	public NodeData() {
 		m_key = m_keyGenerator;
@@ -23,19 +25,16 @@ public class NodeData implements node_data {
 
 	@Override
 	public int getKey() {
-		// TODO Auto-generated method stub
 		return m_key;
 	}
 
 	@Override
 	public Collection<node_data> getNi() {
-		// TODO Auto-generated method stub
 		return m_neighbors;
 	}
 
 	@Override
 	public boolean hasNi(int key) {
-		// TODO Auto-generated method stub
 		// Dummy Object
 		return m_neighbors.contains(new NodeData(key));
 	}
@@ -43,45 +42,39 @@ public class NodeData implements node_data {
 	@Override
 	public boolean equals(Object o) {
 		if(o instanceof NodeData)
-			return ((NodeData) o).m_key == this.m_key;
+			return ((NodeData) o).getKey() == this.getKey();
 		
 		return false;
 	}
 
 	@Override
 	public void addNi(node_data t) {
-		// TODO Auto-generated method stub
-
+		this.m_neighbors.add(t);
 	}
 
 	@Override
 	public void removeNode(node_data node) {
-		// TODO Auto-generated method stub
-
+		this.m_neighbors.remove(node);
 	}
 
 	@Override
 	public String getInfo() {
-		// TODO Auto-generated method stub
-		return null;
+		return m_innerInfo;
 	}
 
 	@Override
 	public void setInfo(String s) {
-		// TODO Auto-generated method stub
-
+		m_innerInfo = s;
 	}
 
 	@Override
 	public int getTag() {
-		// TODO Auto-generated method stub
-		return 0;
+		return m_innerTag;
 	}
 
 	@Override
 	public void setTag(int t) {
-		// TODO Auto-generated method stub
-
+		m_innerTag = t;
 	}
 
 }

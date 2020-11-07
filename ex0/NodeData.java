@@ -1,14 +1,14 @@
 package ex0;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 public class NodeData implements node_data {
 	
 	private static int m_keyGenerator = 0;
 	
 	private int m_key;
-	private ArrayList<node_data> m_neighbors;
+	private HashSet<node_data> m_neighbors;
 	private String m_innerInfo = "No info special aviable yet!";
 	private int m_innerTag = Integer.MIN_VALUE;
 	
@@ -16,7 +16,7 @@ public class NodeData implements node_data {
 		m_key = m_keyGenerator;
 		++m_keyGenerator;
 		
-		m_neighbors = new ArrayList<node_data>();
+		m_neighbors = new HashSet<node_data>();
 	}
 	
 	private NodeData(int key) {

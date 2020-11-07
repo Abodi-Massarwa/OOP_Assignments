@@ -21,6 +21,9 @@ public class NodeData implements node_data {
 	public NodeData() {
 		m_key = s_keyGenerator;
 		++s_keyGenerator;
+		
+		// To have access to this node by it's ID
+		s_allNodes.put(m_key, this);
 	}
 
 	@Override

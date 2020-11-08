@@ -1,13 +1,15 @@
 package ex0;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeSet;
 
-public class NodeData implements node_data {
+public class NodeData implements node_data, Comparable<node_data> {
 	
 	private static int s_keyGenerator = 0;
-	private static HashMap<Integer, NodeData> s_allNodes = new HashMap<Integer, NodeData>();
+	private static ArrayList<NodeData> s_allNodes = new ArrayList<NodeData>();
 	
 	public final static String white = "White", gray = "Gray", black = "Black";
 	
@@ -16,7 +18,7 @@ public class NodeData implements node_data {
 	}
 	
 	private int m_key;
-	private HashSet<node_data> m_neighbors = new HashSet<node_data>();
+	private TreeSet<node_data> m_neighbors = new TreeSet<node_data>();
 	private String m_innerInfo = "No info special aviable yet!";
 	private int m_innerTag = Integer.MIN_VALUE;
 	
@@ -25,7 +27,7 @@ public class NodeData implements node_data {
 		++s_keyGenerator;
 		
 		// To have access to this node by it's ID
-		s_allNodes.put(m_key, this);
+		s_allNodes.add(this);
 	}
 
 	@Override
@@ -79,6 +81,11 @@ public class NodeData implements node_data {
 	@Override
 	public void setTag(int t) {
 		m_innerTag = t;
+	}
+
+	@Override
+	public int compareTo(node_data arg0) {
+		return this.m_key - arg0.getKey();
 	}
 
 }

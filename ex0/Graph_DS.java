@@ -2,20 +2,24 @@ package ex0;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 public class Graph_DS implements graph {
 	
 	
-	private HashSet<node_data> m_vertices = new HashSet<node_data>();
+	private TreeSet<node_data> m_vertices = new TreeSet<node_data>();
 	private int m_modeCount = 0;
 	
 	private void innerStateHasChanged() {
 		++m_modeCount;
 	}
+	
+	public node_data sourceNode() {
+		return m_vertices.first();
+	}
 
 	@Override
 	public node_data getNode(int key) {
-		// TODO Auto-generated method stub
 		return NodeData.getNodeByKey(key);
 	}
 

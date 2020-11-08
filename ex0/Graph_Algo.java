@@ -76,18 +76,6 @@ public class Graph_Algo implements graph_algorithms {
 		}
 	}
 
-	public boolean isConnected_____() {
-		BFS bfs = new BFS();
-		bfs.execute((Graph_DS) m_graph);
-
-		for (node_data node : m_graph.getV()) {
-			if (bfs.m_dist.get(node) == -1)
-				return false;
-		}
-
-		return true;
-	}
-
 	@Override
 	public boolean isConnected() {
 		int count = 0;

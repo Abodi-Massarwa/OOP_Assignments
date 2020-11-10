@@ -2,9 +2,8 @@ package ex0;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.Set;
 
 public class NodeData implements node_data, Comparable<node_data> {
 	
@@ -18,7 +17,7 @@ public class NodeData implements node_data, Comparable<node_data> {
 	}
 	
 	private int m_key;
-	private TreeSet<node_data> m_neighbors = new TreeSet<node_data>();
+	private Set<node_data> m_neighbors = new HashSet<node_data>();
 	private String m_innerInfo = "";
 	private int m_innerTag = 0;
 	
@@ -81,6 +80,11 @@ public class NodeData implements node_data, Comparable<node_data> {
 	@Override
 	public void setTag(int t) {
 		m_innerTag = t;
+	}
+	
+	@Override
+	public int hashCode() {
+		return m_key;
 	}
 
 	@Override

@@ -40,19 +40,19 @@ public class Graph_Algo implements graph_algorithms {
 		public TreeMap<node_data, Integer> m_dist = new TreeMap<>();
 		public TreeMap<node_data, node_data> m_prev = new TreeMap<>();
 
-		public void execute(Graph_DS g) {
-			node_data source = g.sourceNode();
-			this.execute(g, source);
-		}
+		/*
+		 * public void execute(Graph_DS g) { node_data source = g.sourceNode();
+		 * this.execute(g, source); }
+		 */
 
 		public void execute(Graph_DS g, node_data source) {
 			for (node_data v : g.getV()) {
-				v.setInfo(NodeData.white);
+				v.setTag(NodeData.white);
 				m_dist.put(v, -1);
 				m_prev.put(v, null);
 			}
 
-			source.setInfo(NodeData.gray);
+			source.setTag(NodeData.gray);
 			m_dist.put(source, 0);
 
 			Queue<node_data> q = new LinkedList<node_data>();
@@ -62,8 +62,8 @@ public class Graph_Algo implements graph_algorithms {
 				node_data u = q.poll();
 
 				for (node_data v : u.getNi()) {
-					if (v.getInfo().equals(NodeData.white)) {
-						v.setInfo(NodeData.gray);
+					if (v.getTag() == NodeData.white) {
+						v.setTag(NodeData.gray);
 						m_dist.put(v, m_dist.get(u) + 1);
 						m_prev.put(v, u);
 
@@ -71,7 +71,7 @@ public class Graph_Algo implements graph_algorithms {
 					}
 				}
 
-				u.setInfo(NodeData.black);
+				u.setTag(NodeData.black);
 			}
 		}
 	}
@@ -86,27 +86,27 @@ public class Graph_Algo implements graph_algorithms {
 		for (node_data n : m_graph.getV()) {
 			if (nodes.isEmpty())
 				nodes.add(n);
-			n.setInfo(NodeData.white);
+			n.setTag(NodeData.white);
 		}
 
 		while (!nodes.isEmpty()) {
 			node_data n = nodes.remove(0);
 
-			if (n.getInfo().equals(NodeData.white)) {
+			if (n.getTag() == NodeData.white) {
 				++count;
-				n.setInfo(NodeData.gray);
+				n.setTag(NodeData.gray);
 			}
 
-			if (n.getInfo().equals(NodeData.gray)) {
+			if (n.getTag() == NodeData.gray) {
 				for (node_data neighbor : n.getNi()) {
-					if (neighbor.getInfo().equals(NodeData.white)) {
+					if (neighbor.getTag() == NodeData.white) {
 						++count;
-						neighbor.setInfo(NodeData.gray);
+						neighbor.setTag(NodeData.gray);
 						nodes.add(neighbor);
 					}
 				}
 
-				n.setInfo(NodeData.black);
+				n.setTag(NodeData.black);
 			}
 		}
 
@@ -115,7 +115,7 @@ public class Graph_Algo implements graph_algorithms {
 
 	@Override
 	public int shortestPathDist(int src, int dest) {
-		node_data srcNode = NodeData.getNodeByKey(src), destNode = NodeData.getNodeByKey(dest);
+		node_data srcNode = m_graph.getNode(src), destNode = m_graph.getNode(dest);
 
 		TreeMap<node_data, node_data> prev = new TreeMap<node_data, node_data>();
 		TreeMap<node_data, Integer> dist = new TreeMap<node_data, Integer>();
@@ -123,12 +123,12 @@ public class Graph_Algo implements graph_algorithms {
 		for (node_data n : m_graph.getV()) {
 			prev.put(n, null);
 			dist.put(n, -1);
-			n.setInfo(NodeData.white);
+			n.setTag(NodeData.white);
 		}
 
 		dist.put(destNode, 0);
 		prev.put(destNode, null);
-		destNode.setInfo(NodeData.gray);
+		destNode.setTag(NodeData.gray);
 
 		Queue<node_data> q = new LinkedList<node_data>();
 		q.add(destNode);
@@ -140,8 +140,8 @@ public class Graph_Algo implements graph_algorithms {
 				break;
 
 			for (node_data v : u.getNi()) {
-				if (v.getInfo().equals(NodeData.white)) {
-					v.setInfo(NodeData.gray);
+				if (v.getTag() == NodeData.white) {
+					v.setTag(NodeData.gray);
 					dist.put(v, dist.get(u) + 1);
 					prev.put(v, u);
 
@@ -149,7 +149,7 @@ public class Graph_Algo implements graph_algorithms {
 				}
 			}
 
-			u.setInfo(NodeData.black);
+			u.setTag(NodeData.black);
 		}
 
 		return dist.get(srcNode);
@@ -157,7 +157,7 @@ public class Graph_Algo implements graph_algorithms {
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-		node_data srcNode = NodeData.getNodeByKey(src), destNode = NodeData.getNodeByKey(dest);
+		node_data srcNode = m_graph.getNode(src), destNode = m_graph.getNode(dest);
 
 		TreeMap<node_data, node_data> prev = new TreeMap<node_data, node_data>();
 		TreeMap<node_data, Integer> dist = new TreeMap<node_data, Integer>();
@@ -165,12 +165,12 @@ public class Graph_Algo implements graph_algorithms {
 		for (node_data n : m_graph.getV()) {
 			prev.put(n, null);
 			dist.put(n, -1);
-			n.setInfo(NodeData.white);
+			n.setTag(NodeData.white);
 		}
 
 		dist.put(destNode, 0);
 		prev.put(destNode, null);
-		destNode.setInfo(NodeData.gray);
+		destNode.setTag(NodeData.gray);
 
 		Queue<node_data> q = new LinkedList<node_data>();
 		q.add(destNode);
@@ -182,8 +182,8 @@ public class Graph_Algo implements graph_algorithms {
 				break;
 
 			for (node_data v : u.getNi()) {
-				if (v.getInfo().equals(NodeData.white)) {
-					v.setInfo(NodeData.gray);
+				if (v.getTag() == NodeData.white) {
+					v.setTag(NodeData.gray);
 					dist.put(v, dist.get(u) + 1);
 					prev.put(v, u);
 
@@ -191,7 +191,7 @@ public class Graph_Algo implements graph_algorithms {
 				}
 			}
 
-			u.setInfo(NodeData.black);
+			u.setTag(NodeData.black);
 		}
 
 		if (dist.get(srcNode) == -1)

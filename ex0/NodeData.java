@@ -11,7 +11,7 @@ public class NodeData implements node_data, Comparable<node_data> {
 	private static int s_keyGenerator = 0;
 	private static ArrayList<NodeData> s_allNodes = new ArrayList<NodeData>();
 	
-	public final static String white = "White", gray = "Gray", black = "Black";
+	public final static int white = 0, gray =  1, black = 2;
 	
 	public static node_data getNodeByKey(int key) {
 		return s_allNodes.get(key);
@@ -19,8 +19,8 @@ public class NodeData implements node_data, Comparable<node_data> {
 	
 	private int m_key;
 	private TreeSet<node_data> m_neighbors = new TreeSet<node_data>();
-	private String m_innerInfo = "No info special aviable yet!";
-	private int m_innerTag = Integer.MIN_VALUE;
+	private String m_innerInfo = "";
+	private int m_innerTag = 0;
 	
 	public NodeData() {
 		m_key = s_keyGenerator;

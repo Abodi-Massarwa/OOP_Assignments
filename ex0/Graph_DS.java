@@ -14,10 +14,7 @@ public class Graph_DS implements graph {
 	private void innerStateHasChanged() {
 		++m_modeCount;
 	}
-	
-	/*
-	 * public node_data sourceNode() { return m_vertices.firstEntry().getValue(); }
-	 */
+	 
 	
 	public node_data getNode(int key) {
 		return m_vertices.get(key);

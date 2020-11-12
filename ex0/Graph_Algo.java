@@ -77,15 +77,21 @@ public class Graph_Algo implements graph_algorithms {
 	@Override
 	public boolean isConnected() {
 		int count = 0;
-
+		
+		int vertices = m_graph.nodeSize(), edges = m_graph.edgeSize();
+		if(vertices <= 1 || (vertices-1)*(vertices-2)/2 < edges)
+			return true;
+		
 		Queue<node_data> nodes = new LinkedList<node_data>();
+		node_data source = null;
 
 		// Making all nodes white (in case they were black before)
 		for (node_data n : m_graph.getV()) {
-			if (nodes.isEmpty())
-				nodes.add(n);
 			n.setTag(NodeData.white);
+			source = n;
 		}
+		
+		nodes.add(source);
 
 		while (!nodes.isEmpty()) {
 			node_data n = nodes.poll();

@@ -27,7 +27,6 @@ ___
 1.
 ```bash
 Running tests for Ex0 - this may take up to 10 seconds!
-19) runtime test:   pass: false  ERROR(1) false!=true
 
 0) test0   pass: true
 1) test1   pass: true
@@ -48,9 +47,9 @@ Running tests for Ex0 - this may take up to 10 seconds!
 16) test_connectivity1   pass: true
 17) test_connectivity2   pass: true
 18) test_path   pass: true
-19) runtime test:   pass: false  ERROR(1) false!=true
-number of Errors: 1 of 20 tests, 0 exceptions, time: 21.881 seconds
-grade: 95
+19) runtime test:   pass: true
+number of Errors: 0 of 20 tests, 0 exceptions, time: 0.474 seconds
+grade: 100
 ```
 
 

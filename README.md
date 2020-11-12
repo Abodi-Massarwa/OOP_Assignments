@@ -3,9 +3,10 @@
 
 __
 
-_._
-
-_._
+_In this assignment we are implementing a graph with an optimized functionality over 2d matrix graph._ 
+_Methods that the graph support are addNode(node), connectEdge(node1, ndoe2), edgeSize(node), getNode(Key) in O(1)._
+_More methods like removeEdge(node1, node2) is executed in O(1) & removeNode(node1) is executed in O(N) ._
+_There is also a graph wrapper utility class (i.e. Graph_Algo) which supports more useful functionalities such as is the graph connected & finds the shortest path between 2 nodes._
 ___
 ## Links
 ---

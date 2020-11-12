@@ -25,6 +25,7 @@ ___
 ___
 ### Illustration
 1.
+```bash
 Running tests for Ex0 - this may take up to 10 seconds!
 19) runtime test:   pass: false  ERROR(1) false!=true
 
@@ -50,6 +51,7 @@ Running tests for Ex0 - this may take up to 10 seconds!
 19) runtime test:   pass: false  ERROR(1) false!=true
 number of Errors: 1 of 20 tests, 0 exceptions, time: 21.881 seconds
 grade: 95
+```
 
 
 

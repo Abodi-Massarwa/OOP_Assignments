@@ -25,8 +25,33 @@ ___
 ___
 ### Illustration
 1.
+Running tests for Ex0 - this may take up to 10 seconds!
+19) runtime test:   pass: false  ERROR(1) false!=true
 
-2.
+0) test0   pass: true
+1) test1   pass: true
+2) test2()   pass: true
+3) test2()   pass: true
+4) test2(a)   pass: true
+5) test9(a)   pass: true
+6) test9(b)   pass: true
+7) test_n(a)   pass: true
+8) test_n(b)   pass: true
+9) test_n(a)   pass: true
+10) test_n(b)   pass: true
+11) test_n(a)   pass: true
+12) test_n(b)   pass: true
+13) test_n(a)   pass: true
+14) test_n(b)   pass: true
+15) test_connectivity0   pass: true
+16) test_connectivity1   pass: true
+17) test_connectivity2   pass: true
+18) test_path   pass: true
+19) runtime test:   pass: false  ERROR(1) false!=true
+number of Errors: 1 of 20 tests, 0 exceptions, time: 21.881 seconds
+grade: 95
+
+
 
 ---
 **Contributed by:**

@@ -68,7 +68,7 @@ public class Graph_DS implements graph {
 		m_vertices.remove(key);
 		m_edges -= node.getNi().size();
 		
-		for(node_data vertex: m_vertices.values()) {
+		for(node_data vertex: node.getNi()) {
 			vertex.removeNode(node);
 		}
 		

@@ -1,6 +1,5 @@
 package ex0;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -8,13 +7,8 @@ import java.util.Set;
 public class NodeData implements node_data, Comparable<node_data> {
 	
 	private static int s_keyGenerator = 0;
-	private static ArrayList<NodeData> s_allNodes = new ArrayList<NodeData>();
-	
 	public final static int white = 0, gray =  1, black = 2;
-	
-	public static node_data getNodeByKey(int key) {
-		return s_allNodes.get(key);
-	}
+
 	
 	private int m_key;
 	private Set<node_data> m_neighbors = new HashSet<node_data>();
@@ -24,11 +18,12 @@ public class NodeData implements node_data, Comparable<node_data> {
 	public NodeData() {
 		m_key = s_keyGenerator;
 		++s_keyGenerator;
-		
-		// To have access to this node by it's ID
-		s_allNodes.add(this);
 	}
 
+	private NodeData(int key) {
+		m_key = key;
+	}
+	
 	@Override
 	public int getKey() {
 		return m_key;
@@ -41,7 +36,7 @@ public class NodeData implements node_data, Comparable<node_data> {
 
 	@Override
 	public boolean hasNi(int key) {
-		return m_neighbors.contains(getNodeByKey(key));
+		return m_neighbors.contains(new NodeData(key));
 	}
 	
 	@Override

@@ -1,11 +1,8 @@
 package ex0;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class Graph_DS implements graph {
 	
@@ -63,7 +60,7 @@ public class Graph_DS implements graph {
 
 	@Override
 	public Collection<node_data> getV(int node_id) {
-		return m_vertices.containsKey((Integer) node_id)? m_vertices.get(node_id).getNi(): null;
+		return m_vertices.containsKey(node_id)? m_vertices.get(node_id).getNi(): null;
 	}
 
 	@Override

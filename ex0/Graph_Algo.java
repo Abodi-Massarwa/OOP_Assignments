@@ -1,8 +1,6 @@
 package ex0;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -80,7 +78,7 @@ public class Graph_Algo implements graph_algorithms {
 	public boolean isConnected() {
 		int count = 0;
 
-		ArrayList<node_data> nodes = new ArrayList<node_data>();
+		Queue<node_data> nodes = new LinkedList<node_data>();
 
 		// Making all nodes white (in case they were black before)
 		for (node_data n : m_graph.getV()) {
@@ -90,7 +88,7 @@ public class Graph_Algo implements graph_algorithms {
 		}
 
 		while (!nodes.isEmpty()) {
-			node_data n = nodes.remove(0);
+			node_data n = nodes.poll();
 
 			if (n.getTag() == NodeData.white) {
 				++count;
@@ -117,17 +115,14 @@ public class Graph_Algo implements graph_algorithms {
 	public int shortestPathDist(int src, int dest) {
 		node_data srcNode = m_graph.getNode(src), destNode = m_graph.getNode(dest);
 
-		TreeMap<node_data, node_data> prev = new TreeMap<node_data, node_data>();
 		TreeMap<node_data, Integer> dist = new TreeMap<node_data, Integer>();
 
 		for (node_data n : m_graph.getV()) {
-			prev.put(n, null);
 			dist.put(n, -1);
 			n.setTag(NodeData.white);
 		}
 
 		dist.put(destNode, 0);
-		prev.put(destNode, null);
 		destNode.setTag(NodeData.gray);
 
 		Queue<node_data> q = new LinkedList<node_data>();
@@ -143,7 +138,6 @@ public class Graph_Algo implements graph_algorithms {
 				if (v.getTag() == NodeData.white) {
 					v.setTag(NodeData.gray);
 					dist.put(v, dist.get(u) + 1);
-					prev.put(v, u);
 
 					q.add(v);
 				}

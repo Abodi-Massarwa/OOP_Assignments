@@ -7,6 +7,8 @@ public class NodeInfo implements node_info {
 	private static int s_keyGenerator = 0;
 	private static ArrayList<NodeInfo> s_nodes = new ArrayList<NodeInfo>();
 	
+	public final static int white = 0, gray =  1, black = 2;
+	
 	public static node_info getNode(int key) {
 		if(key >= s_keyGenerator)
 			return null;

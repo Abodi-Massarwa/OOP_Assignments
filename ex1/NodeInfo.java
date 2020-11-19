@@ -1,8 +1,18 @@
 package ex1;
 
+import java.util.ArrayList;
+
 public class NodeInfo implements node_info {
 	
 	private static int s_keyGenerator = 0;
+	private static ArrayList<NodeInfo> s_nodes = new ArrayList<NodeInfo>();
+	
+	public static node_info getNode(int key) {
+		if(key >= s_keyGenerator)
+			return null;
+		
+		return s_nodes.get(key);
+	}
 	
 	private int m_key;
 	private String m_info;
@@ -11,6 +21,8 @@ public class NodeInfo implements node_info {
 	public NodeInfo() {
 		m_key = s_keyGenerator;
 		++s_keyGenerator;
+		
+		s_nodes.add(this);
 	}
 
 	@Override

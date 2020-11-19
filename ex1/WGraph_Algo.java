@@ -1,5 +1,6 @@
 package ex1;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -87,13 +88,94 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		return 0;
+		node_info srcNode = m_weightedGraph.getNode(src), destNode = m_weightedGraph.getNode(dest);
+
+		HashMap<node_info, Double> dist = new HashMap<node_info, Double>();
+
+		for (node_info n : m_weightedGraph.getV()) {
+			dist.put(n, -1.0);
+			n.setTag(NodeInfo.white);
+		}
+
+		dist.put(destNode, 0.0);
+		destNode.setTag(NodeInfo.gray);
+
+		Queue<node_info> q = new LinkedList<node_info>();
+		q.add(destNode);
+
+		while (!q.isEmpty()) {
+			node_info u = q.poll();
+
+			if(dist.get(srcNode) != -1) 
+				break;
+
+			for (node_info v : m_weightedGraph.getV(u.getKey())) {
+				if (v.getTag() == NodeInfo.white) {
+					v.setTag(NodeInfo.gray);
+					dist.put(v, dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey()));
+
+					q.add(v);
+				}
+			}
+
+			u.setTag(NodeInfo.black);
+		}
+
+		return dist.get(srcNode);
 	}
 
 	@Override
 	public List<node_info> shortestPath(int src, int dest) {
-		// TODO Auto-generated method stub
-		return null;
+		node_info srcNode = m_weightedGraph.getNode(src), destNode = m_weightedGraph.getNode(dest);
+
+		HashMap<node_info, node_info> prev = new HashMap<node_info, node_info>();
+		HashMap<node_info, Double> dist = new HashMap<node_info, Double>();
+
+		for (node_info n : m_weightedGraph.getV()) {
+			prev.put(n, null);
+			dist.put(n, -1.0);
+			n.setTag(NodeInfo.white);
+		}
+
+		dist.put(destNode, 0.0);
+		prev.put(destNode, null);
+		destNode.setTag(NodeInfo.gray);
+
+		Queue<node_info> q = new LinkedList<node_info>();
+		q.add(destNode);
+
+		while (!q.isEmpty()) {
+			node_info u = q.poll();
+
+			if(dist.get(srcNode) != -1) 
+				break;
+
+			for (node_info v : m_weightedGraph.getV(u.getKey())) {
+				if (v.getTag() == NodeInfo.white) {
+					v.setTag(NodeInfo.gray);
+					dist.put(v, dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey()));
+					prev.put(v, u);
+
+					q.add(v);
+				}
+			}
+
+			u.setTag(NodeInfo.black);
+		}
+
+		if (dist.get(srcNode) == -1)
+			return null;
+
+		List<node_info> ret = new ArrayList<node_info>();
+
+		while (srcNode != destNode) {
+			ret.add(srcNode);
+			srcNode = prev.get(srcNode);
+		}
+
+		ret.add(srcNode);
+
+		return ret;
 	}
 
 	@Override

@@ -52,4 +52,8 @@ public class NodeInfo implements node_info {
 		this.m_tag = t;
 	}
 
+	public static int getNextKey() {
+		return s_keyGenerator;
+	}
+
 }

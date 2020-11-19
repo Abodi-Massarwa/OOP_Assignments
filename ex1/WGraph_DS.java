@@ -36,11 +36,18 @@ public class WGraph_DS implements weighted_graph{
 		node_info nodeInfo1 = getNode(node1), nodeInfo2 = getNode(node2);
 		if(nodeInfo1 == null || nodeInfo2 == null)
 			return -1;
-		return m_weights.get(nodeInfo1).get(nodeInfo2);
+		Double weight = m_weights.get(nodeInfo1).get(nodeInfo2);
+		if(weight != null)
+			return weight.doubleValue();
+		
+		return -1;
 	}
 
 	@Override
 	public void addNode(int key) {
+		if(key == NodeInfo.getNextKey()) new NodeInfo();
+		 
+		
 		node_info node = NodeInfo.getNode(key);
 		
 		if(m_nodes.get(key) != null)
@@ -56,6 +63,11 @@ public class WGraph_DS implements weighted_graph{
 		addNode(node2);
 		
 		node_info nodeInfo1 = getNode(node1), nodeInfo2 = getNode(node2);
+		
+		Double weight = m_weights.get(nodeInfo1).get(nodeInfo2);
+		
+		if(weight != null && weight.doubleValue() == w)
+			return;
 		
 		m_weights.get(nodeInfo1).put(nodeInfo2, w);
 		m_weights.get(nodeInfo2).put(nodeInfo1, w);
@@ -104,7 +116,7 @@ public class WGraph_DS implements weighted_graph{
 		
 		if(nodeInfo1 != null && nodeInfo2 != null) {
 			m_weights.get(nodeInfo1).remove(nodeInfo2);
-			m_weights.get(nodeInfo2).remove(nodeInfo2);
+			m_weights.get(nodeInfo2).remove(nodeInfo1);
 			
 			--m_edges;
 			thisHasChanged();

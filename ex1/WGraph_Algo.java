@@ -1,7 +1,6 @@
 package ex1;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -94,31 +93,30 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 
 		for (node_info n : m_weightedGraph.getV()) {
 			dist.put(n, -1.0);
-			n.setTag(NodeInfo.white);
 		}
 
 		dist.put(destNode, 0.0);
-		destNode.setTag(NodeInfo.gray);
 
-		Queue<node_info> q = new LinkedList<node_info>();
-		q.add(destNode);
+		TreeMap<Double, node_info> q = new TreeMap<Double, node_info>();
+		q.put(0.0, destNode);
 
 		while (!q.isEmpty()) {
-			node_info u = q.poll();
+			Double closest = q.firstKey();
+			node_info u = q.get(closest);
+			
+			q.remove(closest);
 
 			if(dist.get(srcNode) != -1) 
 				break;
 
 			for (node_info v : m_weightedGraph.getV(u.getKey())) {
-				if (v.getTag() == NodeInfo.white) {
-					v.setTag(NodeInfo.gray);
-					dist.put(v, dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey()));
+				double alt = dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey());
+				if (dist.get(v) == -1.0 || alt < dist.get(v)) {
+					dist.put(v, alt);
 
-					q.add(v);
+					q.put(alt, v);
 				}
 			}
-
-			u.setTag(NodeInfo.black);
 		}
 
 		return dist.get(srcNode);
@@ -134,33 +132,32 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 		for (node_info n : m_weightedGraph.getV()) {
 			prev.put(n, null);
 			dist.put(n, -1.0);
-			n.setTag(NodeInfo.white);
 		}
 
 		dist.put(destNode, 0.0);
 		prev.put(destNode, null);
-		destNode.setTag(NodeInfo.gray);
 
-		Queue<node_info> q = new LinkedList<node_info>();
-		q.add(destNode);
+		TreeMap<Double, node_info> q = new TreeMap<Double, node_info>();
+		q.put(0.0, destNode);
 
 		while (!q.isEmpty()) {
-			node_info u = q.poll();
+			Double closest = q.firstKey();
+			node_info u = q.get(closest);
+			
+			q.remove(closest);
 
 			if(dist.get(srcNode) != -1) 
 				break;
 
 			for (node_info v : m_weightedGraph.getV(u.getKey())) {
-				if (v.getTag() == NodeInfo.white) {
-					v.setTag(NodeInfo.gray);
-					dist.put(v, dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey()));
+				double alt = dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey());
+				if (dist.get(v) == -1.0 || alt < dist.get(v)) {
+					dist.put(v, alt);
 					prev.put(v, u);
 
-					q.add(v);
+					q.put(alt, v);
 				}
 			}
-
-			u.setTag(NodeInfo.black);
 		}
 
 		if (dist.get(srcNode) == -1)

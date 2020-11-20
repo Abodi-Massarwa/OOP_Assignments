@@ -1,6 +1,7 @@
 package ex1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -97,14 +98,14 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 
 		dist.put(destNode, 0.0);
 
-		TreeMap<Double, node_info> q = new TreeMap<Double, node_info>();
-		q.put(0.0, destNode);
+		TreeMap<Double, ArrayList<node_info>> q = new TreeMap<Double, ArrayList<node_info>>();
+		q.put(0.0, new ArrayList<node_info>(Arrays.asList(destNode)));
 
 		while (!q.isEmpty()) {
 			Double closest = q.firstKey();
-			node_info u = q.get(closest);
-			
-			q.remove(closest);
+			node_info u = q.get(closest).remove(0);
+			if(q.get(closest).isEmpty())
+				q.remove(closest);
 
 			if(dist.get(srcNode) != -1) 
 				break;
@@ -113,8 +114,13 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 				double alt = dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey());
 				if (dist.get(v) == -1.0 || alt < dist.get(v)) {
 					dist.put(v, alt);
-
-					q.put(alt, v);
+					
+					q.computeIfPresent(alt, (k,list) -> {
+						list.add(v);
+						
+						return list;
+					});
+					q.putIfAbsent(alt, new ArrayList<node_info>(Arrays.asList(v)));
 				}
 			}
 		}
@@ -137,14 +143,14 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 		dist.put(destNode, 0.0);
 		prev.put(destNode, null);
 
-		TreeMap<Double, node_info> q = new TreeMap<Double, node_info>();
-		q.put(0.0, destNode);
+		TreeMap<Double, ArrayList<node_info>> q = new TreeMap<Double, ArrayList<node_info>>();
+		q.put(0.0, new ArrayList<node_info>(Arrays.asList(destNode)));
 
 		while (!q.isEmpty()) {
 			Double closest = q.firstKey();
-			node_info u = q.get(closest);
-			
-			q.remove(closest);
+			node_info u = q.get(closest).remove(0);
+			if(q.get(closest).isEmpty())
+				q.remove(closest);
 
 			if(dist.get(srcNode) != -1) 
 				break;
@@ -154,8 +160,13 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 				if (dist.get(v) == -1.0 || alt < dist.get(v)) {
 					dist.put(v, alt);
 					prev.put(v, u);
-
-					q.put(alt, v);
+					
+					q.computeIfPresent(alt, (k,list) -> {
+						list.add(v);
+						
+						return list;
+					});
+					q.putIfAbsent(alt, new ArrayList<node_info>(Arrays.asList(v)));
 				}
 			}
 		}

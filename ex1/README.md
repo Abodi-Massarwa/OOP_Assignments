@@ -11,8 +11,8 @@ _we used the well-known Dijekstra algorithm to replace BFS algorithm especially 
 _it worths mentioning that we also implemented the LOAD & SAVE functions in graph algo class that would help us save and initialize the graph using files saved in our Drive with respect to serializeable interface implementation_
 
 # Assignment 1 main classes
-1)  _WGraph_DS- implements weighted_graph and node_info interfaces_
-2)  _WGraph_Algo- implements weighted_graph_algorithms interface_
+1) _WGraph_Algo- implements weighted_graph_algorithms interface_
+2) _WGraph_DS- implements weighted_graph in addition node_info interfaces_
 
 # Previously
 

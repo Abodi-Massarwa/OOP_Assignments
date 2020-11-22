@@ -1,11 +1,16 @@
 package ex1;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WGraph_DS implements weighted_graph{
+public class WGraph_DS implements weighted_graph ,Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Map<Integer, node_info> m_nodes = new HashMap<Integer, node_info>();
 	private Map<node_info, Map<node_info, Double>> m_weights = new HashMap<node_info, Map<node_info, Double>>();
 	private int m_edges = 0;

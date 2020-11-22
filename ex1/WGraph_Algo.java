@@ -1,5 +1,11 @@
 package ex1;
 
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -8,8 +14,17 @@ import java.util.List;
 import java.util.Queue;
 import java.util.TreeMap;
 
-public class WGraph_Algo implements weighted_graph_algorithms {
 
+public class WGraph_Algo implements weighted_graph_algorithms  {
+
+	/**
+	 * 
+	 */
+	
+	/**
+	 * 
+	 */
+	
 	private weighted_graph m_weightedGraph;
 	
 	@Override
@@ -107,9 +122,6 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 			if(q.get(closest).isEmpty())
 				q.remove(closest);
 
-			if(dist.get(srcNode) != -1) 
-				break;
-
 			for (node_info v : m_weightedGraph.getV(u.getKey())) {
 				double alt = dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey());
 				if (dist.get(v) == -1.0 || alt < dist.get(v)) {
@@ -152,9 +164,6 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 			if(q.get(closest).isEmpty())
 				q.remove(closest);
 
-			if(dist.get(srcNode) != -1) 
-				break;
-
 			for (node_info v : m_weightedGraph.getV(u.getKey())) {
 				double alt = dist.get(u) + m_weightedGraph.getEdge(v.getKey(), u.getKey());
 				if (dist.get(v) == -1.0 || alt < dist.get(v)) {
@@ -186,16 +195,81 @@ public class WGraph_Algo implements weighted_graph_algorithms {
 		return ret;
 	}
 
+	@SuppressWarnings("null")
 	@Override
 	public boolean save(String file) {
-		// TODO Auto-generated method stub
-		return false;
+		ObjectOutputStream om = null;
+		try {
+			om = new ObjectOutputStream(new FileOutputStream(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				om.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		}
+		try {
+			om.writeObject(this.getGraph());
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				om.close();
+			} catch (IOException e1) {
+				
+				e1.printStackTrace();
+			}
+			return false;
+		}
+		try {
+			om.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			try {
+				om.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			return false;
+		}
+		return true;
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public boolean load(String file) {
-		// TODO Auto-generated method stub
-		return false;
+		ObjectInputStream os =null;
+		boolean flag=true;
+		weighted_graph read=null;
+		try {
+			os= new ObjectInputStream(new FileInputStream(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		while(flag) {
+			try {
+				read= (weighted_graph) os.readObject();
+			} catch (ClassNotFoundException e) {e.printStackTrace();
+				return false;}
+			catch (EOFException e) {
+				flag=false;
+				return false;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return false;
+			}
+
+		}
+		try {
+			os.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+		this.m_weightedGraph=read;
+		return true;
 	}
 
 }

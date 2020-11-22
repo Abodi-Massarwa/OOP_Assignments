@@ -28,7 +28,7 @@ ___
     * [Weighted Graph](https://www.tutorialspoint.com/weighted-graph-representation-in-data-structure)
   ---
   <!--Images-->
-  ![Illustration](https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.researchgate.net%2Ffigure%2FAn-example-of-a-weighted-graph_fig1_329350163&psig=AOvVaw2tH4dUioc2Ru68ELUNbOq7&ust=1606165995777000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCICbyd-Il-0CFQAAAAAdAAAAABAD)
+  ![Illustration](https://www.researchgate.net/profile/Ljubisa_Stankovic/publication/329350163/figure/fig1/AS:730501790855170@1551176607921/An-example-of-a-weighted-graph.png)
 ___
 
 ---

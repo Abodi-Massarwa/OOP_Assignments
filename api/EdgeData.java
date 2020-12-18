@@ -12,9 +12,21 @@ public class EdgeData implements edge_data {
 		m_destNode = dest;
 	}
 	
+	public EdgeData(node_data source, node_data dest, double weight) {
+		m_srcNode = source;
+		m_destNode = dest;
+		m_weight = weight;
+	}
+	
 	public EdgeData(int source, int dest) {
 		m_srcNode = NodesDataHolder.getNodeByKey(source);
 		m_destNode = NodesDataHolder.getNodeByKey(dest);
+	}
+	
+	public EdgeData(int source, int dest, double weight) {
+		m_srcNode = NodesDataHolder.getNodeByKey(source);
+		m_destNode = NodesDataHolder.getNodeByKey(dest);
+		m_weight = weight;
 	}
 
 	@Override

@@ -3,7 +3,6 @@ package api;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -45,132 +44,141 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
 	@Override
 	public boolean isConnected() {
-		int numberOfNodes = 1;
+		int count = 0;
+		
+		int vertices = m_graph.nodeSize(), edges = m_graph.edgeSize();
+		if(vertices <= 1 || (vertices-1)*(vertices-2)/2 < edges)
+			return true;
+		
+		Queue<node_data> nodes = new LinkedList<node_data>();
 		node_data source = null;
-		for (node_data node : m_graph.getV()) {
-			source = node;
-			node.setTag(NodesDataHolder.WHITE);
+
+		// Making all nodes WHITE (in case they were BLACK before)
+		for (node_data n : m_graph.getV()) {
+			n.setTag(NodesDataHolder.WHITE);
+			source = n;
 		}
 		
-		Queue<node_data> q = new LinkedList<node_data>();
-		q.add(source);
-		
-		while (!q.isEmpty()) {
-			node_data node = q.poll();
-			node.setTag(NodesDataHolder.GRAY);
-			
-			for (edge_data node_edges : m_graph.getE(node.getKey())) {
-				node_data neihgbor = NodesDataHolder.getNodeByKey(node_edges.getDest());
-				if(neihgbor.getTag() == NodesDataHolder.WHITE) {
-					q.add(neihgbor);
-					neihgbor.setTag(NodesDataHolder.GRAY);
-					
-					++numberOfNodes;
-				}
+		nodes.add(source);
+
+		while (!nodes.isEmpty()) {
+			node_data n = nodes.poll();
+
+			if (n.getTag() == NodesDataHolder.WHITE) {
+				++count;
+				n.setTag(NodesDataHolder.GRAY);
 			}
-			
-			node.setTag(NodesDataHolder.BLACK);
+
+			if (n.getTag() == NodesDataHolder.GRAY) {
+				for (edge_data edge : m_graph.getE(n.getKey())) {
+					if (edge.getTag() == NodesDataHolder.WHITE) {
+						++count;
+						edge.setTag(NodesDataHolder.GRAY);
+						nodes.add(NodesDataHolder.getNodeByKey(edge.getDest()));
+					}
+				}
+
+				n.setTag(NodesDataHolder.BLACK);
+			}
 		}
-		
-		return (numberOfNodes == m_graph.getV().size());
+
+		return m_graph.getV().size() == count;
 	}
 
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		HashMap<node_data, node_data> nodeToPre = new HashMap<node_data, node_data>();
-		TreeMap<Double, ArrayList<node_data>> distToNode = new TreeMap<Double, ArrayList<node_data>>();
-		
-		for (node_data node: m_graph.getV()) {
-			node.setWeight(Integer.MAX_VALUE);
+		node_data srcNode = m_graph.getNode(src), destNode = m_graph.getNode(dest);
+
+		HashMap<node_data, Double> dist = new HashMap<node_data, Double>();
+
+		for (node_data n : m_graph.getV()) {
+			dist.put(n, -1.0);
 		}
-		
-		distToNode.put(0.0, (ArrayList<node_data>) Arrays.asList(NodesDataHolder.getNodeByKey(src)));
-		
-		while (!distToNode.isEmpty()) {
-			ArrayList<node_data> lstOfClosestNodes = distToNode.firstEntry().getValue();
-			for(node_data minDistNode: lstOfClosestNodes) {
-				double minDist = distToNode.firstEntry().getKey();
-				minDistNode.setWeight(minDist);
-				
-				for (edge_data edge: m_graph.getE(minDistNode.getKey())) {
-					double alternativeWeight = minDistNode.getWeight() + edge.getWeight();
-					node_data dstNode = NodesDataHolder.getNodeByKey(edge.getDest());
-					if(alternativeWeight < dstNode.getWeight()) {
-						dstNode.setWeight(alternativeWeight);
+
+		dist.put(destNode, 0.0);
+
+		TreeMap<Double, ArrayList<node_data>> q = new TreeMap<Double, ArrayList<node_data>>();
+		q.put(0.0, new ArrayList<node_data>(Arrays.asList(destNode)));
+
+		while (!q.isEmpty()) {
+			Double closest = q.firstKey();
+			node_data u = q.get(closest).remove(0);
+			if(q.get(closest).isEmpty())
+				q.remove(closest);
+
+			for (edge_data edge : m_graph.getE(u.getKey())) {
+				node_data v = NodesDataHolder.getNodeByKey(edge.getDest());
+				double alt = dist.get(u) + m_graph.getEdge(v.getKey(), u.getKey()).getWeight();
+				if (dist.get(v) == -1.0 || alt < dist.get(v)) {
+					dist.put(v, alt);
+					
+					q.computeIfPresent(alt, (k,list) -> {
+						list.add(v);
 						
-						distToNode.computeIfPresent(alternativeWeight, (w, list) -> {
-							list.add(minDistNode);
-							
-							return list;
-						});
-						
-						distToNode.putIfAbsent(alternativeWeight, (ArrayList<node_data>) Arrays.asList(dstNode));
-						
-						nodeToPre.put(dstNode, minDistNode);
-					}
+						return list;
+					});
+					q.putIfAbsent(alt, new ArrayList<node_data>(Arrays.asList(v)));
 				}
 			}
-			
-			distToNode.pollFirstEntry();
 		}
-		
-		node_data destNode = NodesDataHolder.getNodeByKey(dest);
-		return nodeToPre.get(destNode) != null? destNode.getWeight(): -1.0;
+
+		return dist.get(srcNode);
 	}
 
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-		HashMap<node_data, node_data> nodeToPre = new HashMap<node_data, node_data>();
-		TreeMap<Double, ArrayList<node_data>> distToNode = new TreeMap<Double, ArrayList<node_data>>();
-		
-		for (node_data node: m_graph.getV()) {
-			node.setWeight(Integer.MAX_VALUE);
+		node_data srcNode = m_graph.getNode(src), destNode = m_graph.getNode(dest);
+
+		HashMap<node_data, node_data> prev = new HashMap<node_data, node_data>();
+		HashMap<node_data, Double> dist = new HashMap<node_data, Double>();
+
+		for (node_data n : m_graph.getV()) {
+			prev.put(n, null);
+			dist.put(n, -1.0);
 		}
-		
-		distToNode.put(0.0, (ArrayList<node_data>) Arrays.asList(NodesDataHolder.getNodeByKey(src)));
-		
-		while (!distToNode.isEmpty()) {
-			ArrayList<node_data> lstOfClosestNodes = distToNode.firstEntry().getValue();
-			for(node_data minDistNode: lstOfClosestNodes) {
-				double minDist = distToNode.firstEntry().getKey();
-				minDistNode.setWeight(minDist);
-				
-				for (edge_data edge: m_graph.getE(minDistNode.getKey())) {
-					double alternativeWeight = minDistNode.getWeight() + edge.getWeight();
-					node_data dstNode = NodesDataHolder.getNodeByKey(edge.getDest());
-					if(alternativeWeight < dstNode.getWeight()) {
-						dstNode.setWeight(alternativeWeight);
+
+		dist.put(destNode, 0.0);
+		prev.put(destNode, null);
+
+		TreeMap<Double, ArrayList<node_data>> q = new TreeMap<Double, ArrayList<node_data>>();
+		q.put(0.0, new ArrayList<node_data>(Arrays.asList(destNode)));
+
+		while (!q.isEmpty()) {
+			Double closest = q.firstKey();
+			node_data u = q.get(closest).remove(0);
+			if(q.get(closest).isEmpty())
+				q.remove(closest);
+
+			for (edge_data edge : m_graph.getE(u.getKey())) {
+				node_data v = NodesDataHolder.getNodeByKey(edge.getDest());
+				double alt = dist.get(u) + m_graph.getEdge(v.getKey(), u.getKey()).getWeight();
+				if (dist.get(v) == -1.0 || alt < dist.get(v)) {
+					dist.put(v, alt);
+					prev.put(v, u);
+					
+					q.computeIfPresent(alt, (k,list) -> {
+						list.add(v);
 						
-						distToNode.computeIfPresent(alternativeWeight, (w, list) -> {
-							list.add(minDistNode);
-							
-							return list;
-						});
-						
-						distToNode.putIfAbsent(alternativeWeight, (ArrayList<node_data>) Arrays.asList(dstNode));
-						
-						nodeToPre.put(dstNode, minDistNode);
-					}
+						return list;
+					});
+					q.putIfAbsent(alt, new ArrayList<node_data>(Arrays.asList(v)));
 				}
 			}
-			
-			distToNode.pollFirstEntry();
 		}
-		
-		node_data destNode = NodesDataHolder.getNodeByKey(dest);
-		if(nodeToPre.get(destNode) == null)
+
+		if (dist.get(srcNode) == -1)
 			return null;
-		
-		List<node_data> ans = new ArrayList<node_data>();
-		ans.add(destNode);
-		while(destNode.getKey() != src) {
-			ans.add(0, destNode);
+
+		List<node_data> ret = new ArrayList<node_data>();
+
+		while (srcNode != destNode) {
+			ret.add(srcNode);
+			srcNode = prev.get(srcNode);
 		}
-		
-		ans.add(0, destNode);
-		
-		
-		return ans;
+
+		ret.add(srcNode);
+
+		return ret;
 	}
 
 	@Override

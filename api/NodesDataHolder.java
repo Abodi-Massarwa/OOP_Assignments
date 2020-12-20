@@ -6,7 +6,7 @@ public class NodesDataHolder {
 	private static ArrayList<node_data> s_allNodes = new ArrayList<node_data>();
 	private static int s_keyGenerator = 0;
 	
-	public static final int WHITE = 0, GRAY = 1, BLACK = 2; 
+	static final int WHITE = 0, GRAY = 1, BLACK = 2; 
 	
 	//  Package modifier (default)
 	static int addNode_GetKey(node_data nodeData) {
